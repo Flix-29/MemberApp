@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="member_item_bg">#6636C0b8</color>
+    <color name="button_color">#35C5b8</color>
 </resources>

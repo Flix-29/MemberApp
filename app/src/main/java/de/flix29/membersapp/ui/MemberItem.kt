@@ -22,12 +22,13 @@ fun MemberItem(member: Member) {
             .background(
                 color = colorResource(R.color.member_item_bg),
                 shape = RoundedCornerShape(12.dp)
-            ) {
-                Text(
-                    text = member.name
-                )
-            }
-    )
+            )
+            .padding(16.dp)
+    ) {
+        Text(
+            text = member.name
+        )
+    }
 }
 
 
