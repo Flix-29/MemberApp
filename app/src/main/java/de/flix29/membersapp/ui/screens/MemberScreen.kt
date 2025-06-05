@@ -14,6 +14,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,9 +32,11 @@ import de.flix29.membersapp.ui.MemberItem
 fun MemberScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 65.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 65.dp)
+            ) {
                 AskQuestionField()
             }
             Box(
@@ -47,11 +53,14 @@ fun MemberScreen() {
 
 @Composable
 fun AskQuestionField() {
+
+    var text by remember { mutableStateOf("") }
+
     Box {
         TextField(
             value = text,
             onValueChange = { text = it },
-            modifier = Modifier.weight(1f),
+//            modifier = Modifier.weight(1f),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
                 unfocusedTextColor = Color.DarkGray,
@@ -63,21 +72,21 @@ fun AskQuestionField() {
                 unfocusedIndicatorColor = Color.Transparent
             )
         )
-        IconButton(
-            onClick = { },
-            modifier = Modifier
-                .size(30.dp)
-                .background(
-                    color = colorResource(R.color.button_color),
-                    shape = CircleShape
-                )
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "Send",
-                tint = Color.White
+    }
+    IconButton(
+        onClick = { },
+        modifier = Modifier
+            .size(30.dp)
+            .background(
+                color = colorResource(R.color.button_color),
+                shape = CircleShape
             )
-        }
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = "Send",
+            tint = Color.White
+        )
     }
 }
 
