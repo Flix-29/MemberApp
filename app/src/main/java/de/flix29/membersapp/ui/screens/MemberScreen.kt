@@ -26,7 +26,6 @@ import de.flix29.membersapp.ui.MemberItem
 
 @Composable
 fun MemberScreen() {
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier
@@ -84,7 +83,6 @@ fun AskQuestionField() {
 
 @Composable
 fun MembersList(list: List<Member>) {
-
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(list) { member ->
             MemberItem(member = member)
