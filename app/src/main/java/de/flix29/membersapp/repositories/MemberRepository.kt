@@ -1,12 +1,13 @@
 package de.flix29.membersapp.repositories
 
 import android.content.Context
-import de.flix29.membersapp.MemberReposityInterface
+import de.flix29.membersapp.MemberRepositoryInterface
 import de.flix29.membersapp.model.Member
+import javax.inject.Inject
 
 class MemberRepository @Inject constructor(
     context: Context
-): MemberReposityInterface {
+): MemberRepositoryInterface {
 
     override suspend fun getRandomName(
         memberList: List<Member>

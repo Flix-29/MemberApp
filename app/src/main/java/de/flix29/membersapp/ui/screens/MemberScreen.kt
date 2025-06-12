@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,12 +28,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import de.flix29.R
 import de.flix29.membersapp.model.Member
 import de.flix29.membersapp.ui.MemberItem
+import de.flix29.membersapp.viewmodels.MemberViewModel
 
 @Composable
-fun MemberScreen() {
+fun MemberScreen(memberViewModel: MemberViewModel = hiltViewModel()) {
+
+    val membersList by memberViewModel.memberList.collectAsState()
+    val randomName by memberViewModel.randomName.collectAsState()
+    val randomNameReceived by memberViewModel.randomNameReceived.collectAsState()
+
+    LaunchedEffect(Unit) {
+        memberViewModel.fetchMembers()
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
@@ -37,7 +52,7 @@ fun MemberScreen() {
                     .fillMaxSize()
                     .padding(top = 65.dp)
             ) {
-                AskQuestionField()
+                AskQuestionField(memberViewModel, membersList, randomName)
             }
             Box(
                 modifier = Modifier
@@ -45,16 +60,46 @@ fun MemberScreen() {
                     .padding(top = 45.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                MembersList()
+                MembersList(membersList)
+            }
+        }
+    }
+
+    if (randomNameReceived) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        color= colorResource(R.color.member_item_bg),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(60.dp)
+            ) {
+                Text(
+                    text = "Random Name: ${randomName ?: "No name found"}",
+                    color = Color.Black,
+                    modifier = Modifier.padding(8.dp)
+                )
             }
         }
     }
 }
 
 @Composable
-fun AskQuestionField() {
-
+fun AskQuestionField(
+    memberViewModel: MemberViewModel,
+    list: List<Member>,
+    randomName: String?,
+) {
     var text by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("Name") }
+
+    if (randomName != null) {
+        name = randomName
+    }
 
     Box {
         TextField(
@@ -74,7 +119,7 @@ fun AskQuestionField() {
         )
     }
     IconButton(
-        onClick = { },
+        onClick = { memberViewModel.clickGetRandomMember(list) },
         modifier = Modifier
             .size(30.dp)
             .background(
